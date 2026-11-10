@@ -10,4 +10,12 @@ class BibliotecaDAO:
     def __init__(self):
         pass
 
-    # TODO
+    def get_all_biblioteche(self) -> list[Biblioteca]:
+        """Restituisce la lista di tutte le biblioteche presenti nel database."""
+        connessione = DBConnect.get_connection()
+        cursor = connessione.cursor()
+        cursor.execute("SELECT id, nome, indirizzo FROM biblioteca ORDER BY nome")
+        biblioteche = [Biblioteca(id=riga[0], nome=riga[1], indirizzo=riga[2]) for riga in cursor.fetchall()]
+        cursor.close()
+        connessione.close()
+        return biblioteche
